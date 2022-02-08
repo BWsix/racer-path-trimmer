@@ -5,30 +5,33 @@ enum Strategy {
     RIGHT,
 }
 
-//% weight=100 color=#0fbc11 icon=""
+//% color="#AA278D" weight=100
 namespace Racer {
     interface TrimTable {
         searchVal: string;
         replaceVal: string;
-        for?: Strategy;
     }
 
-    const trimTableList: TrimTable[] = [
-        { for: null, searchVal: "LBR", replaceVal: "B" },
-        { for: null, searchVal: "RBL", replaceVal: "B" },
-        { for: null, searchVal: "SBS", replaceVal: "B" },
-        { for: Strategy.LEFT, searchVal: "LBL", replaceVal: "S" },
-        { for: Strategy.LEFT, searchVal: "LBS", replaceVal: "R" },
-        { for: Strategy.LEFT, searchVal: "SBL", replaceVal: "R" },
-        { for: Strategy.RIGHT, searchVal: "RBR", replaceVal: "S" },
-        { for: Strategy.RIGHT, searchVal: "RBS", replaceVal: "L" },
-        { for: Strategy.RIGHT, searchVal: "SBR", replaceVal: "L" },
-    ];
-
     const getTrimTable = (strategy: Strategy) => {
-        return trimTableList.filter(
-            (trimTable) => trimTable.for === null || trimTable.for === strategy
-        );
+        const trimTableListLeft: TrimTable[] = [
+            { searchVal: "LBR", replaceVal: "B" },
+            { searchVal: "RBL", replaceVal: "B" },
+            { searchVal: "SBS", replaceVal: "B" },
+            { searchVal: "LBL", replaceVal: "S" },
+            { searchVal: "LBS", replaceVal: "R" },
+            { searchVal: "SBL", replaceVal: "R" },
+        ];
+
+        const trimTableListRight: TrimTable[] = [
+            { searchVal: "LBR", replaceVal: "B" },
+            { searchVal: "RBL", replaceVal: "B" },
+            { searchVal: "SBS", replaceVal: "B" },
+            { searchVal: "RBR", replaceVal: "S" },
+            { searchVal: "RBS", replaceVal: "L" },
+            { searchVal: "SBR", replaceVal: "L" },
+        ];
+
+        return strategy === Strategy.LEFT ? trimTableListLeft : trimTableListRight;
     };
 
     //% block="trim $path using strategy $strategy"
@@ -44,7 +47,7 @@ namespace Racer {
             }
 
             if (!trimmed) {
-                return "ERROR;" //TODO better error message.
+                return "ERROR"; //TODO better error message.
             }
         }
 
